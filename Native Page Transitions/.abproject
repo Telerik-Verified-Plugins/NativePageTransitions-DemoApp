@@ -2,15 +2,15 @@
   "ProjectName": "Native Page Transitions",
   "ProjectGuid": "50d05748-b326-4b02-b459-9fe1db993885",
   "projectVersion": 1,
-  "AppIdentifier": "com.telerik.NativePageTransitions",
+  "AppIdentifier": "com.telerik.plugindemo.nativepagetransitions",
   "DisplayName": "Native Page Transitions",
-  "Author": "",
-  "Description": "",
+  "Author": "Telerik",
+  "Description": "Native Page Transitions",
   "BundleVersion": "1.0",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1",
-	"2"
+    "2"
   ],
   "iOSBackgroundMode": [],
   "WP8TileTitle": "",
@@ -22,52 +22,19 @@
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
   "FrameworkVersion": "3.5.0",
   "CorePlugins": [
-    "org.apache.cordova.battery-status",
-    "org.apache.cordova.camera",
     "org.apache.cordova.console",
-    "org.apache.cordova.contacts",
     "org.apache.cordova.device",
-    "org.apache.cordova.device-motion",
-    "org.apache.cordova.device-orientation",
     "org.apache.cordova.dialogs",
-    "org.apache.cordova.file",
-    "org.apache.cordova.file-transfer",
-    "org.apache.cordova.geolocation",
-    "org.apache.cordova.globalization",
-    "org.apache.cordova.inappbrowser",
-    "org.apache.cordova.media",
-    "org.apache.cordova.media-capture",
-    "org.apache.cordova.network-information",
-    "org.apache.cordova.splashscreen",
-    "org.apache.cordova.statusbar",
-    "org.apache.cordova.vibration"
+    "org.apache.cordova.splashscreen"
   ],
   "AndroidPermissions": [
-    "android.permission.ACCESS_COARSE_LOCATION",
-    "android.permission.ACCESS_FINE_LOCATION",
-    "android.permission.ACCESS_LOCATION_EXTRA_COMMANDS",
-    "android.permission.ACCESS_NETWORK_STATE",
-    "android.permission.ACCOUNT_MANAGER",
-    "android.permission.BROADCAST_STICKY",
-    "android.permission.CAMERA",
-    "android.permission.GET_ACCOUNTS",
-    "android.permission.INTERNET",
-    "android.permission.MANAGE_ACCOUNTS",
-    "android.permission.MODIFY_AUDIO_SETTINGS",
-    "android.permission.READ_CONTACTS",
-    "android.permission.READ_PHONE_STATE",
-    "android.permission.RECEIVE_SMS",
-    "android.permission.RECORD_AUDIO",
-    "android.permission.VIBRATE",
-    "android.permission.WRITE_CONTACTS",
-    "android.permission.WRITE_EXTERNAL_STORAGE"
+    "android.permission.INTERNET"
   ],
   "DeviceOrientations": [
-    "Portrait",
-    "Landscape"
+    "Portrait"
   ],
   "AndroidHardwareAcceleration": "false",
-  "iOSStatusBarStyle": "Default",
+  "iOSStatusBarStyle": "Hidden",
   "WP8SupportedResolutions": [
     "ID_RESOLUTION_WVGA",
     "ID_RESOLUTION_WXGA",

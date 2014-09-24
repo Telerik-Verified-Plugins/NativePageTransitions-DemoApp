@@ -1,0 +1,49 @@
+/* INFO VIEW STYLES */
+.logo-image-wrapper {
+    background-color: #fff;    
+}
+
+.logo-image {
+    background-image: url(../styles/images/logo.png);
+    background-repeat: no-repeat;
+    width: 319px;
+    height: 60px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* DEMO VIEW STYLES */
+.demo .button {
+    margin: 0 auto;
+    margin-bottom: 14px;
+    width: 30%;  
+}
+
+.buttons {
+    margin-top: 14px;
+    text-align: center;
+}
+
+h3.hassubtitle {
+    margin-bottom: 0;
+}
+
+.subtitle {
+    color: #999;
+    font-size: 0.8em;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.smaller {
+    font-size: 0.8em;
+}
+
+/* RETINA DISPLAY STYLES */
+@media only screen and (-webkit-min-device-pixel-ratio: 2),(min-resolution: 192dpi) {
+    .logo-image {
+        background-image: url(../styles/images/logo2x.png);
+        background-size: 100%;
+    }
+}
