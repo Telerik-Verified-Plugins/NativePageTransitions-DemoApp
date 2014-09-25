@@ -4,6 +4,7 @@
   
   DemoViewModel = kendo.data.ObservableObject.extend({
 
+    // slide
     slideLeft: function () {
       this.slide("left");
     },
@@ -27,8 +28,8 @@
       if (!this.checkSimulator()) {        
         var options = {
           "direction" : direction,
-          "duration"  : highspeed.check() ? 400 : 1000,
-          "slowdownfactor" : overlap.check() ? 3 : 1
+          "duration"  : highspeed.check() ? 400 : 3000,
+          "slowdownfactor" : overlap.check() ? 4 : 1
         };
         window.plugins.nativepagetransitions.slide(
           options,
@@ -38,6 +39,36 @@
       }
     },
 
+
+    // drawer
+    openDrawer: function () {
+      this.drawer("open");
+    },
+
+    closeDrawer: function () {
+      this.drawer("close");
+    },
+
+    drawer: function (action) {
+      var highspeed = $("#drawer-highspeed-switch").data("kendoMobileSwitch");
+      var originright = $("#drawer-originright-switch").data("kendoMobileSwitch");
+
+      if (!this.checkSimulator()) {        
+        var options = {
+          "action" : action,
+          "origin" : originright.check() ? "right" : "left",
+          "duration"  : highspeed.check() ? 300 : 3000
+        };
+        window.plugins.nativepagetransitions.drawer(
+          options,
+          function (msg) {console.log("SUCCESS: " + JSON.stringify(msg))},
+          function (msg) {alert("ERROR: "   + JSON.stringify(msg))}
+        );
+      }
+    },
+    
+
+    // flip
     flipLeft: function () {
       this.flip("left");
     },
@@ -60,7 +91,7 @@
       if (!this.checkSimulator()) {        
         var options = {
           "direction" : direction,
-          "duration"  : highspeed.check() ? 400 : 1000
+          "duration"  : highspeed.check() ? 500 : 3000
         };
         window.plugins.nativepagetransitions.flip(
           options,

@@ -1,0 +1,11 @@
+.ui-header {
+  height:60px
+}
+
+.ui-header h1 {
+	line-height:58px;
+}
+
+.ui-header .ui-btn {
+	top:24px !important;
+}

@@ -51,28 +51,31 @@
           <ul data-role="listview" data-style="inset" data-type="group">
             <li>Playground
               <div class="buttons">
-                <button data-role="button" class="button" href="#slidedemo">Slide</button>
                 <button data-role="button" class="button" href="#flipdemo">Flip</button>
+                <button data-role="button" class="button" href="#slidedemo">Slide</button>
+                <button data-role="button" class="button" href="#drawerdemo">Drawer</button>
               </div>
             </li>
             <li>Real world demos
               <ul>
-                <li>Kendo UI
-                  <div class="buttons">
-                    <button data-role="button" class="button right" data-bind="click: kendoDemo">Default</button>
-                    <button data-role="button" class="button right" data-bind="click: kendoDemo">Native</button>
-                  </div>
-                </li>
                 <li>JQuery Mobile
                   <div class="buttons">
-                    <button data-role="button" class="button right" data-bind="click: kendoDemo">Default</button>
-                    <button data-role="button" class="button right" data-bind="click: kendoDemo">Native</button>
+                    <button data-role="button" class="button" onclick="window.location='demos/jquerymobile/index-default.html'">Default</button>
+                    <button data-role="button" class="button" onclick="window.location='demos/jquerymobile/index-native.html'">Native</button>
+                  </div>
+                </li>
+                <li>Kendo UI
+                  <div class="buttons" style="color:#aaa">
+                    Will be added soon<br/><br/>
+                    <!--button data-role="button" class="button right" data-bind="click: kendoDemo">Default</button>
+                    <button data-role="button" class="button right" data-bind="click: kendoDemo">Native</button-->
                   </div>
                 </li>
                 <li>Multi Page Application
-                  <div class="buttons">
-                    <button data-role="button" class="button right" data-bind="click: kendoDemo">Default</button>
-                    <button data-role="button" class="button right" data-bind="click: kendoDemo">Native</button>
+                  <div class="buttons" style="color:#aaa">
+                    Will be added soon<br/><br/>
+                    <!--button data-role="button" class="button right" data-bind="click: kendoDemo">Default</button>
+                    <button data-role="button" class="button right" data-bind="click: kendoDemo">Native</button-->
                   </div>
                 </li>
                 <!-- ionic? http://coenraets.org/blog/2014/08/employee-directory-sample-app-with-ionic-and-node-js/ -->
@@ -133,6 +136,30 @@
             <li>Flip options
               <ul>
                 <li>High speed <input data-role="switch" id="flip-highspeed-switch" checked="checked" /></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+    </div>
+
+    <!--Drawerdemo View-->
+    <div id="drawerdemo"
+        data-role="view"
+        data-title="Drawer Transition Demo"
+        data-model="app.demoService.viewModel">
+
+        <div class="demo">
+          <ul data-role="listview" data-style="inset" data-type="group">
+            <li>Drawer demo (iOS only)
+              <div class="buttons">
+                <button data-role="button" class="button" data-bind="click: openDrawer">Open</button>
+                <button data-role="button" class="button" data-bind="click: closeDrawer">Close</button>
+              </div>
+            </li>
+            <li>Drawer options
+              <ul>
+                <li>High speed <input data-role="switch" id="drawer-highspeed-switch" checked="checked" /></li>
+                <li>Drawer on the right <input data-role="switch" id="drawer-originright-switch" checked="checked" /></li>
               </ul>
             </li>
           </ul>

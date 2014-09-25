@@ -12,6 +12,7 @@
   NSNumber *slowdownfactor = [args objectForKey:@"slowdownfactor"];
 
   self.viewController.view.backgroundColor = [UIColor blackColor];
+  self.webView.layer.shadowOpacity = 0;
 
   // duration/delay is passed in ms, but needs to be in sec here
   duration = duration / 1000;
@@ -113,6 +114,7 @@
   _command = command;
   NSMutableDictionary *args = [command.arguments objectAtIndex:0];
   NSString *action = [args objectForKey:@"action"];
+  NSString *origin = [args objectForKey:@"origin"];
   NSTimeInterval duration = [[args objectForKey:@"duration"] doubleValue];
   NSTimeInterval delay = [[args objectForKey:@"iosdelay"] doubleValue];
   NSString *href = [args objectForKey:@"href"];
@@ -125,11 +127,23 @@
   CGFloat height = self.viewController.view.frame.size.height;
   
   CGFloat transitionToX = 0;
+  CGFloat webviewTransitionFromX = 0;
+  int screenshotPx = 44;
   
   if ([action isEqualToString:@"open"]) {
-    transitionToX = width-44;
+    if ([origin isEqualToString:@"right"]) {
+      transitionToX = -width+screenshotPx;
+    } else {
+      transitionToX = width-screenshotPx;
+    }
   } else if ([action isEqualToString:@"close"]) {
-    transitionToX = -(width-44);
+    if ([origin isEqualToString:@"right"]) {
+      transitionToX = screenshotPx;
+      webviewTransitionFromX = -width+screenshotPx;
+    } else {
+      transitionToX = -width+screenshotPx;
+      webviewTransitionFromX = width-screenshotPx;
+    }
   }
   
   CGSize viewSize = self.viewController.view.bounds.size;
@@ -155,8 +169,6 @@
   if ([action isEqualToString:@"open"]) {
     [UIApplication.sharedApplication.keyWindow.subviews.lastObject insertSubview:_screenShotImageView aboveSubview:self.webView];
   } else {
-//    [UIApplication.sharedApplication.keyWindow.subviews.lastObject insertSubview:_screenShotImageView belowSubview:self.webView];
-    [UIApplication.sharedApplication.keyWindow.subviews.lastObject bringSubviewToFront:self.webView];
     // add a cool shadow here as well
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:self.webView.bounds];
     self.webView.layer.masksToBounds = NO;
@@ -183,9 +195,13 @@
                      }];
     }
     
-    // included the code below for the 'push' animation, divide transitionX and Y for a more subtle effect
     if ([action isEqualToString:@"close"]) {
-      [self.webView setFrame:CGRectMake(width-44, 0, width, height)];
+      [self.webView setFrame:CGRectMake(webviewTransitionFromX, 0, width, height)];
+      
+      // position thw webview above the screenshot just after the animation kicks in so no flash of the webview occurs
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay+50 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+        [UIApplication.sharedApplication.keyWindow.subviews.lastObject bringSubviewToFront:self.webView];
+      });
     
       [UIView animateWithDuration:duration
                             delay:delay
@@ -207,10 +223,29 @@
   NSMutableDictionary *args = [command.arguments objectAtIndex:0];
   NSString *direction = [args objectForKey:@"direction"];
   NSTimeInterval duration = [[args objectForKey:@"duration"] doubleValue];
+  NSTimeInterval delay = [[args objectForKey:@"iosdelay"] doubleValue];
   NSString *href = [args objectForKey:@"href"];
   
-  // duration/delay is passed in ms, but needs to be in sec here
+  // duration is passed in ms, but needs to be in sec here
   duration = duration / 1000;
+
+  // overlay the webview with a screenshot to prevent the user from seeing changes in the webview before the flip kicks in
+  CGSize viewSize = self.viewController.view.bounds.size;
+  
+  UIGraphicsBeginImageContextWithOptions(viewSize, YES, 0.0);
+  [self.viewController.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+  
+  // Read the UIImage object
+  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  
+  CGFloat width = self.viewController.view.frame.size.width;
+  CGFloat height = self.viewController.view.frame.size.height;
+  [_screenShotImageView setFrame:CGRectMake(0, 0, width, height)];
+  
+  _screenShotImageView = [[UIImageView alloc]initWithFrame:[self.viewController.view.window frame]];
+  [_screenShotImageView setImage:image];
+  [UIApplication.sharedApplication.keyWindow.subviews.lastObject insertSubview:_screenShotImageView aboveSubview:self.webView];
   
   UIViewAnimationOptions animationOptions;
   if ([direction isEqualToString:@"right"]) {
@@ -228,14 +263,20 @@
   }
   
   if ([self loadHrefIfPassed:href]) {
-    [UIView transitionWithView:self.viewController.view
-                      duration:duration
-                       options:animationOptions | UIViewAnimationOptionAllowAnimatedContent // that last bit prevents screenshot-based animation (https://developer.apple.com/library/ios/documentation/windowsviews/conceptual/viewpg_iphoneos/animatingviews/animatingviews.html)
-                    animations:^{}
-                    completion:^(BOOL finished) {
-                      CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-                      [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-                    }];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+      // remove the screenshot halfway during the transition
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (duration/2) * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+        [_screenShotImageView removeFromSuperview];
+      });
+      [UIView transitionWithView:self.viewController.view
+                        duration:duration
+                         options:animationOptions | UIViewAnimationOptionAllowAnimatedContent
+                      animations:^{}
+                      completion:^(BOOL finished) {
+                        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                      }];
+    });
   }
 }
 
