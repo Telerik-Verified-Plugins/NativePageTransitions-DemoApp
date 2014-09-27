@@ -20,7 +20,7 @@
     function slide(direction, href) {
       window.plugins.nativepagetransitions.slide(
         {
-          'duration': 300,
+          'duration': 400,
           'direction': direction,
           'iosdelay': 50,
           'androiddelay': 120,
@@ -30,13 +30,14 @@
           console.log('slide transition finished');
         });
     }
-    function flip(direction) {
+    function flip(direction, href) {
       window.plugins.nativepagetransitions.flip(
         {
-          'duration': 450,
+          'duration': 500,
           'direction': direction,
           'iosdelay': 10,
-          'androiddelay': 200
+          'androiddelay': 200,
+          'href': href
         },
         function () {
           console.log('flip transition finished');
@@ -70,7 +71,7 @@
     <div data-role="content">
       <input type="text" placeholder="You can leave this blank" />
       <input type="password" placeholder="And this as well" />
-      <div><a data-role="button" data-icon="flat-lock" data-theme="f" href="#home" onclick="flip('right')">Log in</a></div>
+      <div><a data-role="button" data-icon="flat-lock" data-theme="f" onclick="flip('right', '#home')">Log in</a></div>
       <br/><h3>Native transitions</h3>
     </div>
   </div>
@@ -82,7 +83,7 @@
     <div data-role="content">
       <input type="text" placeholder="You can leave this blank" />
       <input type="password" placeholder="And this as well" />
-      
+
       <fieldset class="ui-grid-a">
         <div class="ui-block-a"><a data-role="button" onclick="slide('down', '#home')" data-icon="carat-d" data-theme="a">Close</a></div>
         <div class="ui-block-b"><a data-role="button" onclick="slide('down', '#home')" data-icon="flat-new" data-theme="b">Send</a></div>
@@ -100,7 +101,7 @@
   <div data-role="page" id="home">
 
     <div data-role="header">
-      <a data-iconpos="notext" data-role="button" data-icon="flat-cross" title="Home" onclick="flip('left')" href="#login">Home</a>
+      <a data-iconpos="notext" data-role="button" data-icon="flat-cross" title="Home" onclick="flip('left', '#login')">Home</a>
       <h1>Home</h1>
       <a data-iconpos="notext" onclick="drawer('open', 'right', '#panel')" data-role="button" data-icon="flat-menu"></a>
     </div>
@@ -112,7 +113,7 @@
         <li data-theme="c"><a onclick="slide('left', '#details')">Slide forward</a></li>
       </ul>
 
-      <a data-role="button" onclick="slide('up', '#contact')" data-icon="carat-u" data-theme="a">Contact us - slide up</a>
+      <div><a data-role="button" onclick="slide('up', '#contact')" data-icon="carat-u" data-theme="a">Contact us - slide up</a></div>
 
       <p>All stuff below is just for show</p>
 
