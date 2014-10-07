@@ -19,8 +19,6 @@
             app.application.skin(mobileSkin);
         };
 
-        var os = kendo.support.mobileOS,
-            statusBarStyle = os.ios && os.flatVersion >= 700 ? "black-translucent" : "black";
-        app.application = new kendo.mobile.Application(document.body, { layout: "tabstrip-layout", statusBarStyle: statusBarStyle });
+        app.application = new kendo.mobile.Application(document.body, { layout: "tabstrip-layout" });
     }, false);
 })(window);

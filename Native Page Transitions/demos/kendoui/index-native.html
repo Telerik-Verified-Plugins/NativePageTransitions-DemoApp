@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+    <script>
+        window.onerror = function(a,b,c) {
+            alert(a);
+            alert(c);
+        }
+    </script>
+  <link href="styles/kendo.mobile.all.min.css" rel="stylesheet"/>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/kendo.mobile.min.js"></script>
+  <script type="text/javascript" src="../../cordova.js"></script>
+  <script src="NativePageTransitionsKendoAdapter.js"></script>
+</head>
+<body>
+
+<div data-role="view" id="employees" data-layout="drawer-layout">
+  <header data-role="header">
+    <div data-role="navbar" id="employees-navbar">
+        <a data-role="backbutton" id="employees-back" data-align="left" href="../../index.html" data-rel="external" data-transition="none">Exit</a>
+      <span data-role="view-title">Employees</span>
+      <a data-role="button" data-rel="drawer" href="#my-drawer" data-icon="drawer-button" data-align="right"></a>
+    </div>
+  </header>
+  <ul data-role="listview" class="hierarchical-listview">
+    <li>
+      <span class="employee-image" style="background-image: url('content/employees/1.jpg')"></span>
+      <h2>Nancy Davolio</h2>
+    </li>
+    <li>
+      <span class="employee-image" style="background-image: url('content/employees/3.jpg')"></span>
+      <h2>Janet Leverling</h2>
+    </li>
+    <li>
+      <span class="employee-image" style="background-image: url('content/employees/4.jpg')"></span>
+      <h2>Margaret Peacock</h2>
+    </li>
+    <li>
+      <a href="#employee-details" class="parent" data-transition="slide:left">
+        <span class="employee-image" style="background-image: url('content/employees/5.jpg')"></span>
+        <h2>Steven Buchanan</h2>
+      </a>
+    </li>
+    <li>
+      <span class="employee-image" style="background-image: url('content/employees/8.jpg')"></span>
+      <h2>Laura Callahan</h2>
+    </li>
+  </ul>
+</div>
+
+<div data-role="view" id="employee-details">
+  <header data-role="header">
+    <div data-role="navbar" id="employee-details-navbar">
+      <a data-role="backbutton" id="employee-details-back" data-align="left" href="#employees" data-transition="slide:right">Back</a>
+      <span data-role="view-title">Details</span>
+    </div>
+  </header>
+  <ul data-role="listview" class="hierarchical-listview">
+    <li>
+      <span class="employee-image" style="background-image: url('content/employees/6.jpg')"></span>
+      <h2>Michael Suyama</h2>
+    </li>
+    <li>
+      <a href="#employees" class="parent" data-transition="slide:right">
+        <span class="employee-image" style="background-image: url('content/employees/7.jpg')"></span>
+        <h2>Robert King</h2>
+      </a>
+      <a data-role="detailbutton" data-style="rowdelete"></a>
+    </li>
+    <li>
+      <span class="employee-image" style="background-image: url('content/employees/9.jpg')"></span>
+      <h2>Anne Dodsworth</h2>
+    </li>
+  </ul>
+</div>
+
+<div data-role="view" id="flip-view1">
+  <header data-role="header">
+    <div data-role="navbar" id="flip-navbar">
+      <a data-role="backbutton" id="flip-back" data-align="left" href="#employees">Back</a>
+      <span data-role="view-title">Flip demo, page 1</span>
+    </div>
+  </header>
+  <ul data-role="listview" data-type="group">
+    <li>Flippers (native only)
+      <ul>
+        <li><a href="#flip-view2" data-transition="flip:right">Right</a></li>
+        <li><a href="#flip-view2" data-transition="flip:up">Up</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div data-role="view" id="flip-view2">
+  <header data-role="header">
+    <div data-role="navbar" id="flip-navbar2">
+      <a data-role="backbutton" id="flip-back2" data-align="left" href="#flip-view1">Back</a>
+      <span data-role="view-title">Flip demo, page 2</span>
+    </div>
+  </header>
+  <ul data-role="listview" data-type="group">
+    <li>More Flippers
+      <ul>
+        <li><a href="#flip-view1" data-transition="flip:left">Left</a></li>
+        <li><a href="#flip-view1" data-transition="flip:down">Down</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div data-role="drawer" id="my-drawer" data-views="['employees']">
+  <ul data-role="listview" data-type="group">
+    <li>Transition demos
+      <ul>
+        <li data-icon="contacts"><a href="#employees" data-transition="none">Slide</a></li>
+        <li data-icon="refresh"><a href="#flip-view1" data-transition="none">Flip</a></li>
+        <li data-icon="action"><a href="remoteview1-native.html" data-transition="none">Remote view with slide</a></li>
+      </ul>
+    </li>
+    <li>Dummy content
+      <ul>
+        <li>You</li>
+        <li>Can</li>
+        <li>Safely</li>
+        <li>Ignore</li>
+        <li>This</li>
+      </ul>
+    </li>
+    <li>More dummy content
+      <ul>
+        <li data-icon="settings">Settings</li>
+        <li data-icon="off">Log Out</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<style>
+
+  .km-drawer-button:before, .km-drawer-button:after {
+    content: "\E077";
+  }
+
+  .hierarchical-listview .employee-image {
+    width: 4em;
+    height: 4.4em;
+    margin: 0;
+    border: 1px solid rgba(0, 0, 0, .2);
+    -webkit-border-radius: 4em;
+    border-radius: 4em;
+    display: inline-block;
+    -webkit-background-size: auto 100%;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-transform: translatez(0);
+    vertical-align: middle;
+  }
+
+  .hierarchical-listview h2 {
+    display: inline-block;
+    margin: .5em;
+    font-size: 1.1em;
+  }
+
+  .km-android .hierarchical-listview .parent:after {
+    display: inline-block;
+    border-color: #ffffff;
+  }
+
+  .km-wp .hierarchical-listview .parent:after {
+    display: inline-block;
+    border-color: #cccccc;
+  }
+</style>
+
+<script>
+  var app = new kendo.mobile.Application(document.body);
+</script>
+</body>
+</html>

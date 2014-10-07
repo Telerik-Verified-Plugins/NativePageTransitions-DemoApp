@@ -25,7 +25,8 @@
     "org.apache.cordova.console",
     "org.apache.cordova.device",
     "org.apache.cordova.dialogs",
-    "org.apache.cordova.splashscreen"
+    "org.apache.cordova.splashscreen",
+    "org.apache.cordova.statusbar"
   ],
   "AndroidPermissions": [
     "android.permission.INTERNET"
@@ -34,7 +35,7 @@
     "Portrait"
   ],
   "AndroidHardwareAcceleration": "False",
-  "iOSStatusBarStyle": "Hidden",
+  "iOSStatusBarStyle": "Default",
   "WP8SupportedResolutions": [
     "ID_RESOLUTION_WVGA",
     "ID_RESOLUTION_WXGA",
