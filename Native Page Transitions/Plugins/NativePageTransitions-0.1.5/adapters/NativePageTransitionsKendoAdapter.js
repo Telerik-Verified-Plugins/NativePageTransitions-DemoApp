@@ -48,7 +48,7 @@
         var backbuttonView = backbuttonViews[i];
         // find the view which is currently showing (not hidden)
         if (backbuttonView.style.display != "none") {
-          var backbuttons = backbuttonView.querySelectorAll('a[data-role="backbutton"]:not([data-rel])');
+          var backbuttons = backbuttonView.querySelectorAll('a[data-role="backbutton"]');
           for (var j = 0; j < backbuttons.length; j++) {
             var backbutton = backbuttons[j];
             if (backbutton.getAttribute("data-transition-native") !== "false") {

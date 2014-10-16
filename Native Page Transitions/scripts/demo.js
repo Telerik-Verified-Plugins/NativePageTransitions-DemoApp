@@ -29,7 +29,8 @@
         var options = {
           "direction" : direction,
           "duration"  : highspeed.check() ? 400 : 3000,
-          "slowdownfactor" : overlap.check() ? 4 : 1
+          "slowdownfactor" : overlap.check() ? 4 : 1,
+          "href" : null
         };
         window.plugins.nativepagetransitions.slide(
           options,
@@ -57,7 +58,8 @@
         var options = {
           "action" : action,
           "origin" : originright.check() ? "right" : "left",
-          "duration"  : highspeed.check() ? 300 : 3000
+          "duration"  : highspeed.check() ? 300 : 3000,
+          "href" : null
         };
         window.plugins.nativepagetransitions.drawer(
           options,
@@ -91,7 +93,8 @@
       if (!this.checkSimulator()) {        
         var options = {
           "direction" : direction,
-          "duration"  : highspeed.check() ? 500 : 3000
+          "duration"  : highspeed.check() ? 500 : 3000,
+          "href" : null
         };
         window.plugins.nativepagetransitions.flip(
           options,

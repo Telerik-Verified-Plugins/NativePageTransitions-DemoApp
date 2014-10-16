@@ -6,6 +6,12 @@
   <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
   <link href="styles/main.css" rel="stylesheet" />
 
+    <script>
+        window.onerror = function(a,b,c) {
+            alert(a);
+            alert(c);
+        }
+    </script>
   <script src="cordova.js"></script>
   <script src="kendo/js/jquery.min.js"></script>
   <script src="kendo/js/kendo.mobile.min.js"></script>
@@ -30,10 +36,12 @@
         </div>
         <h3>Native Page Transitions Demo</h3>
         <p>
-          This app is a showcase for the Telerik Native Page Transition Cordova plugin.
+            This app is a showcase for the Telerik Native Page Transition Cordova plugin.
+            The plugin currently supports native Slide, Flip and Drawer transitions on iOS and Android.
         </p>
         <p>
-          The plugin currently supports native Slide and Flip transitions on iOS and Android.
+            If you're using KendoUI to build your apps (this demo app does!),
+            then take a look at the KendoUI adapter. See the Marketplace doc for details.
         </p>
         <p>
             Custom plugins don't work in the simulator and the AppBuilder companion app,
