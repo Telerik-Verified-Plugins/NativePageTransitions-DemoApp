@@ -32,7 +32,7 @@ namespace Cordova.Extension.Commands
             [DataMember(IsRequired = true, Name = "duration")]
             public int duration { get; set; }
 
-            [DataMember(IsRequired = true, Name = "slowdownfactor")]
+            [DataMember(IsRequired = false, Name = "slowdownfactor")]
             public int slowdownfactor { get; set; }
 
             [DataMember(IsRequired = false, Name = "href")]
@@ -197,7 +197,7 @@ namespace Cordova.Extension.Commands
                 int direction = 1;
                 DependencyProperty property = PlaneProjection.RotationYProperty;
 
-                if (transitionOptions.direction == "left")
+                if (transitionOptions.direction == "right")
                 {
                     direction = -1;
                 }

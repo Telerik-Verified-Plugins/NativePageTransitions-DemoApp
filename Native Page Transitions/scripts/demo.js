@@ -30,6 +30,9 @@
           "direction" : direction,
           "duration"  : highspeed.check() ? 400 : 3000,
           "slowdownfactor" : overlap.check() ? 4 : 1,
+          "iosdelay"     : 0,
+          "androiddelay" : 0,
+          "winphonedelay": 0,
           "href" : null
         };
         window.plugins.nativepagetransitions.slide(
@@ -59,6 +62,9 @@
           "action" : action,
           "origin" : originright.check() ? "right" : "left",
           "duration"  : highspeed.check() ? 300 : 3000,
+          "iosdelay"     : 0,
+          "androiddelay" : 0,
+          "winphonedelay": 0,
           "href" : null
         };
         window.plugins.nativepagetransitions.drawer(
@@ -94,6 +100,9 @@
         var options = {
           "direction" : direction,
           "duration"  : highspeed.check() ? 500 : 3000,
+          "iosdelay"     : 0,
+          "androiddelay" : 0,
+          "winphonedelay": 0,
           "href" : null
         };
         window.plugins.nativepagetransitions.flip(
