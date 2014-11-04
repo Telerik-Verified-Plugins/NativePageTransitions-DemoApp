@@ -8,7 +8,8 @@
   <ul data-role="listview" data-type="group">
     <li>Slide
       <ul>
-          <li data-icon="inbox"><a href="remoteview2-native.html" ontouchend="window.plugins.nativepagetransitions.slide({'direction':'left'})">Next</a></li>
+          <!--li data-icon="inbox"><a href="remoteview2-native.html" ontouchstart="window.plugins.nativepagetransitions.slide({'href':null, 'direction':'left'}, function(){}, function(msg){alert(msg)})">Next</a></li-->
+          <li data-icon="inbox"><a data-transition="slide" href="remoteview2-native.html">Next</a></li>
       </ul>
     </li>
   </ul>

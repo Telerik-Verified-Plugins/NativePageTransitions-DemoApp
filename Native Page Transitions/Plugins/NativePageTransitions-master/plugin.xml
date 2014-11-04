@@ -2,7 +2,7 @@
 <plugin
     xmlns="http://apache.org/cordova/ns/plugins/1.0"
     id="com.telerik.plugins.nativepagetransitions"
-    version="0.1.5">
+    version="0.2.0">
 
 	<name>Native Page Transitions</name>
 
@@ -43,4 +43,14 @@
 		<source-file src="src/android/lib/FlipAnimation.java" target-dir="src/com/telerik/plugins/nativepagetransitions/lib"/>
 		<source-file src="src/android/lib/AnimationFactory.java" target-dir="src/com/telerik/plugins/nativepagetransitions/lib"/>
 	</platform>
+
+  <!-- windows phone -->
+  <platform name="wp8">
+    <config-file target="config.xml" parent="/*">
+      <feature name="NativePageTransitions">
+        <param name="wp-package" value="NativePageTransitions"/>
+      </feature>
+    </config-file>
+    <source-file src="src/winphone/NativePageTransitions.cs" />
+  </platform>
 </plugin>

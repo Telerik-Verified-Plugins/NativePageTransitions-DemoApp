@@ -13,12 +13,12 @@
     "2"
   ],
   "iOSBackgroundMode": [],
-  "WP8TileTitle": "",
-  "WP8Publisher": "",
+  "WP8TileTitle": "Transitions",
+  "WP8Publisher": "Telerik",
   "WP8Capabilities": [],
   "WP8Requirements": [],
-  "WP8PublisherID": "",
-  "WP8ProductID": "",
+  "WP8PublisherID": "{f523594f-0ae7-43da-bc44-f7ce1202df9c}",
+  "WP8ProductID": "{50d05748-b326-4b02-b459-9fe1db993885}",
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
   "FrameworkVersion": "3.5.0",
   "CorePlugins": [
