@@ -52,9 +52,11 @@
           <ul data-role="listview" data-style="inset" data-type="group">
             <li>Playground
               <div class="buttons">
-                <button data-role="button" class="button" href="#flipdemo">Flip</button>
-                <button data-role="button" class="button" href="#slidedemo">Slide</button>
-                <button data-role="button" class="button" href="#drawerdemo">Drawer</button>
+                  <button data-role="button" class="button" href="#flipdemo">Flip</button>
+                  <button data-role="button" class="button" href="#slidedemo">Slide</button>
+                  <br/>
+                  <button data-role="button" class="button" href="#drawerdemo">Drawer</button>
+                  <button data-role="button" class="button" href="#curldemo">Curl</button>
               </div>
             </li>
             <li>Framework demos
@@ -139,6 +141,30 @@
           </ul>
         </div>
     </div>
+
+<!--Curldemo View-->
+<div id="curldemo"
+  data-role="view"
+  data-title="Curl Transition Demo"
+  data-model="app.demoService.viewModel">
+  
+  <div class="demo">
+    <ul data-role="listview" data-style="inset" data-type="group">
+      <li>Flip demo
+        <div class="buttons">
+          <button data-role="button" class="button" data-bind="click: curlUp">Up</button>
+          <br/>
+          <button data-role="button" class="button" data-bind="click: curlDown">Down</button>
+        </div>
+      </li>
+      <li>Curl options
+        <ul>
+          <li>High speed <input data-role="switch" id="curl-highspeed-switch" checked="checked" /></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
 
     <!--Drawerdemo View-->
     <div id="drawerdemo"

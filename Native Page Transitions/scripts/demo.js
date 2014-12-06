@@ -112,6 +112,32 @@
         );
       }
     },
+      
+    // curl
+    curlUp: function () {
+      this.curl("up");
+    },
+      
+    curlDown: function () {
+      this.curl("down");
+    },
+
+    curl: function (direction) {
+      var highspeed = $("#curl-highspeed-switch").data("kendoMobileSwitch");
+      if (!this.checkSimulator()) {
+        var options = {
+            "direction" : direction,
+            "duration"  : highspeed.check() ? 500 : 3000,
+            "iosdelay"     : 0,
+            "href" : null
+        };
+        window.plugins.nativepagetransitions.curl(
+            options,
+            function (msg) {console.log("SUCCESS: " + JSON.stringify(msg))},
+            function (msg) {alert("ERROR: "   + JSON.stringify(msg))}
+        );
+      }
+    },
 
     checkSimulator: function() {
       if (window.navigator.simulator === true) {
