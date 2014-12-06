@@ -8,10 +8,8 @@
 - (CDVPlugin*) initWithWebView:(UIWebView*)theWebView {
   self = [super initWithWebView:theWebView];
   CGRect screenBound = [[UIScreen mainScreen] bounds];
-  _width = screenBound.size.width;
-  _height = screenBound.size.height;
   // webview height may differ from screen height because of a statusbar
-  _nonWebViewHeight = (_height - self.webView.frame.size.height);
+  _nonWebViewHeight = screenBound.size.width-self.webView.frame.size.width + screenBound.size.height-self.webView.frame.size.height;
   return self;
 }
 
@@ -32,9 +30,19 @@
   delay = delay / 1000;
   CGFloat lowerLayerAlpha = 0.4f; // TODO consider passing in
   
-//  CGFloat totalHeight = self.viewController.view.frame.size.height;
+  //  CGFloat totalHeight = self.viewController.view.frame.size.height;
   CGFloat width = self.viewController.view.frame.size.width;
   CGFloat height = self.viewController.view.frame.size.height;
+  CGRect screenshotRect = [self.viewController.view.window frame];
+
+  // correct landscape detection on iOS < 8
+  BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+  if (isLandscape && width < height) {
+    screenshotRect = CGRectMake(screenshotRect.origin.x, screenshotRect.origin.y, screenshotRect.size.height, screenshotRect.size.width);
+    CGFloat temp = width;
+    width = height;
+    height = temp;
+  }
 
   CGFloat transitionToX = 0;
   CGFloat transitionToY = 0;
@@ -42,7 +50,7 @@
   CGFloat webviewToY = _nonWebViewHeight;
   int screenshotSlowdownFactor = 1;
   int webviewSlowdownFactor = 1;
-
+  
   if ([direction isEqualToString:@"left"]) {
     transitionToX = -width;
     screenshotSlowdownFactor = [slowdownfactor intValue];
@@ -64,12 +72,12 @@
   
   UIGraphicsBeginImageContextWithOptions(viewSize, YES, 0.0);
   [self.viewController.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-  
+
   // Read the UIImage object
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  
-  _screenShotImageView = [[UIImageView alloc]initWithFrame:[self.viewController.view.window frame]];
+
+  _screenShotImageView = [[UIImageView alloc]initWithFrame:screenshotRect];
   [_screenShotImageView setImage:image];
   
   // in case of a statusbar above the webview, crop off the top
@@ -84,7 +92,7 @@
     [_screenShotImageView setImage:newImage];
     CGImageRelease(tempImage);
   }
-
+  
   if ([direction isEqualToString:@"left"] || [direction isEqualToString:@"up"]) {
     [UIApplication.sharedApplication.keyWindow.subviews.lastObject insertSubview:_screenShotImageView belowSubview:self.webView];
   } else {
@@ -156,7 +164,17 @@
   
   CGFloat width = self.viewController.view.frame.size.width;
   CGFloat height = self.viewController.view.frame.size.height;
+  CGRect screenshotRect = [self.viewController.view.window frame];
   
+  // correct landscape detection on iOS < 8
+  BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+  if (isLandscape && width < height) {
+    screenshotRect = CGRectMake(screenshotRect.origin.x, screenshotRect.origin.y, screenshotRect.size.height, screenshotRect.size.width);
+    CGFloat temp = width;
+    width = height;
+    height = temp;
+  }
+
   CGFloat transitionToX = 0;
   CGFloat webviewTransitionFromX = 0;
   int screenshotPx = 44;
@@ -185,9 +203,9 @@
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   
-  [_screenShotImageView setFrame:CGRectMake(0, 0, width, height)];
+  [_screenShotImageView setFrame:screenshotRect];
   if ([action isEqualToString:@"open"]) {
-    _screenShotImageView = [[UIImageView alloc]initWithFrame:[self.viewController.view.window frame]];
+    _screenShotImageView = [[UIImageView alloc]initWithFrame:screenshotRect];
     // add a cool shadow
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:_screenShotImageView.bounds];
     _screenShotImageView.layer.masksToBounds = NO;
@@ -230,7 +248,7 @@
     if ([action isEqualToString:@"close"]) {
       [self.webView setFrame:CGRectMake(webviewTransitionFromX, _nonWebViewHeight, width, height)];
       
-      // position thw webview above the screenshot just after the animation kicks in so no flash of the webview occurs
+      // position the webview above the screenshot just after the animation kicks in so no flash of the webview occurs
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay+50 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
         [UIApplication.sharedApplication.keyWindow.subviews.lastObject bringSubviewToFront:self.webView];
       });
@@ -281,13 +299,29 @@
   
   UIViewAnimationOptions animationOptions;
   if ([direction isEqualToString:@"right"]) {
-    animationOptions = UIViewAnimationOptionTransitionFlipFromLeft;
+    if (width < height && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
+      animationOptions = UIViewAnimationOptionTransitionFlipFromTop;
+    } else {
+      animationOptions = UIViewAnimationOptionTransitionFlipFromLeft;
+    }
   } else if ([direction isEqualToString:@"left"]) {
-    animationOptions = UIViewAnimationOptionTransitionFlipFromRight;
+    if (width < height && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
+      animationOptions = UIViewAnimationOptionTransitionFlipFromBottom;
+    } else {
+      animationOptions = UIViewAnimationOptionTransitionFlipFromRight;
+    }
   } else if ([direction isEqualToString:@"up"]) {
-    animationOptions = UIViewAnimationOptionTransitionFlipFromTop;
+    if (width < height && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
+      animationOptions = UIViewAnimationOptionTransitionFlipFromRight;
+    } else {
+      animationOptions = UIViewAnimationOptionTransitionFlipFromTop;
+    }
   } else if ([direction isEqualToString:@"down"]) {
-    animationOptions = UIViewAnimationOptionTransitionFlipFromBottom;
+    if (width < height && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
+      animationOptions = UIViewAnimationOptionTransitionFlipFromLeft;
+    } else {
+      animationOptions = UIViewAnimationOptionTransitionFlipFromBottom;
+    }
   } else {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"direction should be one of up|down|left|right"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -312,8 +346,66 @@
   }
 }
 
+- (void) curl:(CDVInvokedUrlCommand*)command {
+  _command = command;
+  NSMutableDictionary *args = [command.arguments objectAtIndex:0];
+  NSString *direction = [args objectForKey:@"direction"];
+  NSTimeInterval duration = [[args objectForKey:@"duration"] doubleValue];
+  NSTimeInterval delay = [[args objectForKey:@"iosdelay"] doubleValue];
+  NSString *href = [args objectForKey:@"href"];
+  
+  // duration is passed in ms, but needs to be in sec here
+  duration = duration / 1000;
+  
+  // overlay the webview with a screenshot to prevent the user from seeing changes in the webview before the flip kicks in
+  CGSize viewSize = self.viewController.view.bounds.size;
+  
+  UIGraphicsBeginImageContextWithOptions(viewSize, YES, 0.0);
+  [self.viewController.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+  
+  // Read the UIImage object
+  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  
+  CGFloat width = self.viewController.view.frame.size.width;
+  CGFloat height = self.viewController.view.frame.size.height;
+  [_screenShotImageView setFrame:CGRectMake(0, 0, width, height)];
+  
+  _screenShotImageView = [[UIImageView alloc]initWithFrame:[self.viewController.view.window frame]];
+  [_screenShotImageView setImage:image];
+  [UIApplication.sharedApplication.keyWindow.subviews.lastObject insertSubview:_screenShotImageView aboveSubview:self.webView];
+  
+  UIViewAnimationOptions animationOptions;
+  if ([direction isEqualToString:@"up"]) {
+    animationOptions = UIViewAnimationOptionTransitionCurlUp;
+  } else if ([direction isEqualToString:@"down"]) {
+    animationOptions = UIViewAnimationOptionTransitionCurlDown;
+  } else {
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"direction should be one of up|down"];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    return;
+  }
+  
+  if ([self loadHrefIfPassed:href]) {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+      // remove the screenshot halfway during the transition
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (duration/2) * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+        [_screenShotImageView removeFromSuperview];
+      });
+      [UIView transitionWithView:self.viewController.view
+                        duration:duration
+                         options:animationOptions | UIViewAnimationOptionAllowAnimatedContent
+                      animations:^{}
+                      completion:^(BOOL finished) {
+                        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                      }];
+    });
+  }
+}
+
 - (BOOL) loadHrefIfPassed:(NSString*) href {
-  if (href != [NSNull null]) {
+  if (href != nil && href != [NSNull null]) {
     if (![href hasPrefix:@"#"] && [href rangeOfString:@".html"].location != NSNotFound) {
       // strip any params when looking for the file on the filesystem
       NSString *bareFileName = href;
@@ -347,6 +439,11 @@
     } else {
       // it's a hash, so load the url without any possible current hash
       NSString *url = self.webView.request.URL.absoluteString;
+      // remove the # if it's still there
+      if ([url rangeOfString:@"#"].location != NSNotFound) {
+        NSRange range = [url rangeOfString:@"#"];
+        url = [url substringToIndex:range.location];
+      }
       // attach the hash
       url = [url stringByAppendingString:href];
       // and load it
