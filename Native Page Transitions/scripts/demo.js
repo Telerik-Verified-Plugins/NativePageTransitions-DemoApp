@@ -33,7 +33,9 @@
           "iosdelay"     : 0,
           "androiddelay" : 0,
           "winphonedelay": 0,
-          "href" : null
+          "href" : null,
+          "fixedPixelsTop": 0,
+          "fixedPixelsBottom": 60
         };
         window.plugins.nativepagetransitions.slide(
           options,
