@@ -3,7 +3,8 @@
 @implementation NativePageTransitions
 
 #define IS_RETINA_DISPLAY() [[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2.0f
-#define DISPLAY_SCALE IS_RETINA_DISPLAY() ? 2.0f : 1.0f
+#define IS_RETINA_HD_DISPLAY() [[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 3.0f
+#define DISPLAY_SCALE IS_RETINA_HD_DISPLAY() ? 3.0f : (IS_RETINA_DISPLAY() ? 2.0f : 1.0f)
 
 - (CDVPlugin*) initWithWebView:(UIWebView*)theWebView {
   self = [super initWithWebView:theWebView];
@@ -25,7 +26,7 @@
   NSNumber *fixedPixelsBottomNum = [args objectForKey:@"fixedPixelsBottom"];
   int fixedPixelsTop = [fixedPixelsTopNum intValue];
   int fixedPixelsBottom = [fixedPixelsBottomNum intValue];
-
+  
   self.viewController.view.backgroundColor = [UIColor blackColor];
   self.webView.layer.shadowOpacity = 0;
   
@@ -38,7 +39,7 @@
   CGFloat width = self.viewController.view.frame.size.width;
   CGFloat height = self.viewController.view.frame.size.height;
   CGRect screenshotRect = [self.viewController.view.window frame];
-
+  
   // correct landscape detection on iOS < 8
   BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
   if (isLandscape && width < height) {
@@ -47,7 +48,7 @@
     width = height;
     height = temp;
   }
-
+  
   CGFloat transitionToX = 0;
   CGFloat transitionToY = 0;
   CGFloat webviewFromY = _nonWebViewHeight;
@@ -76,11 +77,11 @@
   
   UIGraphicsBeginImageContextWithOptions(viewSize, YES, 0.0);
   [self.viewController.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-
+  
   // Read the UIImage object
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-
+  
   _screenShotImageView = [[UIImageView alloc]initWithFrame:screenshotRect];
   [_screenShotImageView setImage:image];
   CGFloat retinaFactor = DISPLAY_SCALE;
@@ -96,23 +97,21 @@
   }
   
   if ([direction isEqualToString:@"left"] || [direction isEqualToString:@"up"]) {
-    [UIApplication.sharedApplication.keyWindow.subviews.lastObject insertSubview:_screenShotImageView belowSubview:self.webView];
+    [self.webView.superview insertSubview:_screenShotImageView belowSubview:self.webView];
   } else {
-    [UIApplication.sharedApplication.keyWindow.subviews.lastObject insertSubview:_screenShotImageView aboveSubview:self.webView];
+    [self.webView.superview insertSubview:_screenShotImageView aboveSubview:self.webView];
   }
-
+  
   // Make a cropped version of the screenshot with only the top and/or bottom piece. Only for left/right slides atm.
   if ([direction isEqualToString:@"left"] || [direction isEqualToString:@"right"]) {
     if (fixedPixelsTop > 0) {
-      CGRect rect = CGRectMake(0.0, fixedPixelsTop*retinaFactor, image.size.width*retinaFactor, fixedPixelsTop*retinaFactor);
-      CGRect rect2 = CGRectMake(0.0, fixedPixelsTop, image.size.width, fixedPixelsTop);
+      CGRect rect = CGRectMake(0.0, _nonWebViewHeight*retinaFactor, image.size.width*retinaFactor, fixedPixelsTop*retinaFactor);
+      CGRect rect2 = CGRectMake(0.0, _nonWebViewHeight, image.size.width, fixedPixelsTop);
       CGImageRef tempImage = CGImageCreateWithImageInRect([image CGImage], rect);
       _screenShotImageViewTop = [[UIImageView alloc]initWithFrame:rect2];
       [_screenShotImageViewTop setImage:[UIImage imageWithCGImage:tempImage]];
       CGImageRelease(tempImage);
-      [UIApplication.sharedApplication.keyWindow.subviews.lastObject
-       insertSubview:_screenShotImageViewTop
-       aboveSubview:([direction isEqualToString:@"left"] ? self.webView : self.screenShotImageView)];
+      [self.webView.superview insertSubview:_screenShotImageViewTop aboveSubview:([direction isEqualToString:@"left"] ? self.webView : self.screenShotImageView)];
     }
     if (fixedPixelsBottom > 0) {
       CGRect rect = CGRectMake(0.0, (image.size.height-fixedPixelsBottom)*retinaFactor, image.size.width*retinaFactor, fixedPixelsBottom*retinaFactor);
@@ -121,9 +120,7 @@
       _screenShotImageViewBottom = [[UIImageView alloc]initWithFrame:rect2];
       [_screenShotImageViewBottom setImage:[UIImage imageWithCGImage:tempImage]];
       CGImageRelease(tempImage);
-      [UIApplication.sharedApplication.keyWindow.subviews.lastObject
-          insertSubview:_screenShotImageViewBottom
-          aboveSubview:([direction isEqualToString:@"left"] ? self.webView : self.screenShotImageView)];
+      [self.webView.superview insertSubview:_screenShotImageViewBottom aboveSubview:([direction isEqualToString:@"left"] ? self.webView : self.screenShotImageView)];
     }
   }
   
@@ -152,13 +149,13 @@
                        }];
     }
     
-    [self.webView setFrame:CGRectMake(-transitionToX/webviewSlowdownFactor, webviewFromY, width, height)];
+    [self.webView setFrame:CGRectMake(-transitionToX/webviewSlowdownFactor, webviewFromY, width, height-_nonWebViewHeight)];
     
     [UIView animateWithDuration:duration
                           delay:delay
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                       [self.webView setFrame:CGRectMake(0, webviewToY, width, height)];
+                       [self.webView setFrame:CGRectMake(0, webviewToY, width, height-_nonWebViewHeight)];
                      }
                      completion:^(BOOL finished) {
                        // doesn't matter if these weren't added
@@ -205,7 +202,7 @@
     width = height;
     height = temp;
   }
-
+  
   CGFloat transitionToX = 0;
   CGFloat webviewTransitionFromX = 0;
   int screenshotPx = 44;
@@ -247,7 +244,7 @@
   }
   [_screenShotImageView setImage:image];
   if ([action isEqualToString:@"open"]) {
-    [UIApplication.sharedApplication.keyWindow.subviews.lastObject insertSubview:_screenShotImageView aboveSubview:self.webView];
+    [self.webView.superview insertSubview:_screenShotImageView aboveSubview:self.webView];
   } else {
     // add a cool shadow here as well
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:self.webView.bounds];
@@ -277,18 +274,18 @@
     }
     
     if ([action isEqualToString:@"close"]) {
-      [self.webView setFrame:CGRectMake(webviewTransitionFromX, _nonWebViewHeight, width, height)];
+      [self.webView setFrame:CGRectMake(webviewTransitionFromX, _nonWebViewHeight, width, height-_nonWebViewHeight)];
       
       // position the webview above the screenshot just after the animation kicks in so no flash of the webview occurs
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay+50 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
-        [UIApplication.sharedApplication.keyWindow.subviews.lastObject bringSubviewToFront:self.webView];
+        [self.webView.superview bringSubviewToFront:self.webView];
       });
       
       [UIView animateWithDuration:duration
                             delay:delay
                           options:UIViewAnimationOptionCurveEaseInOut
                        animations:^{
-                         [self.webView setFrame:CGRectMake(0, _nonWebViewHeight, width, height)];
+                         [self.webView setFrame:CGRectMake(0, _nonWebViewHeight, width, height-_nonWebViewHeight)];
                        }
                        completion:^(BOOL finished) {
                          [_screenShotImageView removeFromSuperview];
@@ -326,7 +323,7 @@
   
   _screenShotImageView = [[UIImageView alloc]initWithFrame:[self.viewController.view.window frame]];
   [_screenShotImageView setImage:image];
-  [UIApplication.sharedApplication.keyWindow.subviews.lastObject insertSubview:_screenShotImageView aboveSubview:self.webView];
+  [self.webView.superview insertSubview:_screenShotImageView aboveSubview:self.webView];
   
   UIViewAnimationOptions animationOptions;
   if ([direction isEqualToString:@"right"]) {
@@ -404,7 +401,7 @@
   
   _screenShotImageView = [[UIImageView alloc]initWithFrame:[self.viewController.view.window frame]];
   [_screenShotImageView setImage:image];
-  [UIApplication.sharedApplication.keyWindow.subviews.lastObject insertSubview:_screenShotImageView aboveSubview:self.webView];
+  [self.webView.superview insertSubview:_screenShotImageView aboveSubview:self.webView];
   
   UIViewAnimationOptions animationOptions;
   if ([direction isEqualToString:@"up"]) {
