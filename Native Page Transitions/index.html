@@ -57,6 +57,7 @@
                   <br/>
                   <button data-role="button" class="button" href="#drawerdemo">Drawer</button>
                   <button data-role="button" class="button" href="#curldemo">Curl</button>
+                  <button data-role="button" class="button" href="#fadedemo">Fade</button>
               </div>
             </li>
             <li>Framework demos
@@ -150,7 +151,7 @@
   
   <div class="demo">
     <ul data-role="listview" data-style="inset" data-type="group">
-      <li>Flip demo
+      <li>Curl demo (iOS only)
         <div class="buttons">
           <button data-role="button" class="button" data-bind="click: curlUp">Up</button>
           <br/>
@@ -166,24 +167,46 @@
   </div>
 </div>
 
-    <!--Drawerdemo View-->
-    <div id="drawerdemo"
+<!--Curldemo View-->
+<div id="curldemo"
+  data-role="view"
+  data-title="Curl Transition Demo"
+  data-model="app.demoService.viewModel">
+  
+  <div class="demo">
+    <ul data-role="listview" data-style="inset" data-type="group">
+      <li>Curl demo (iOS only)
+        <div class="buttons">
+          <button data-role="button" class="button" data-bind="click: curlUp">Up</button>
+          <br/>
+          <button data-role="button" class="button" data-bind="click: curlDown">Down</button>
+        </div>
+      </li>
+      <li>Curl options
+        <ul>
+          <li>High speed <input data-role="switch" id="curl-highspeed-switch" checked="checked" /></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+
+  <!--Fadedemo View-->
+    <div id="fadedemo"
         data-role="view"
-        data-title="Drawer Transition Demo"
+        data-title="Fade Transition Demo"
         data-model="app.demoService.viewModel">
 
         <div class="demo">
           <ul data-role="listview" data-style="inset" data-type="group">
-            <li>Drawer demo (iOS only)
+            <li>Fade demo (iOS and Android)
               <div class="buttons">
-                <button data-role="button" class="button" data-bind="click: openDrawer">Open</button>
-                <button data-role="button" class="button" data-bind="click: closeDrawer">Close</button>
+                <button data-role="button" class="button" data-bind="click: fade">Fade</button>
               </div>
             </li>
-            <li>Drawer options
+            <li>Fade options
               <ul>
-                <li>High speed <input data-role="switch" id="drawer-highspeed-switch" checked="checked" /></li>
-                <li>Drawer on the right <input data-role="switch" id="drawer-originright-switch" checked="checked" /></li>
+                <li>High speed <input data-role="switch" id="fade-highspeed-switch" checked="checked" /></li>
               </ul>
             </li>
           </ul>

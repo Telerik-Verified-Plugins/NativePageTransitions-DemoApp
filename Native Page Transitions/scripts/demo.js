@@ -141,6 +141,24 @@
       }
     },
 
+    // fade
+    fade: function () {
+      var highspeed = $("#fade-highspeed-switch").data("kendoMobileSwitch");
+      if (!this.checkSimulator()) {
+        var options = {
+            "duration"  : highspeed.check() ? 500 : 3000,
+            "androiddelay" : 0,
+            "iosdelay"  : 0,
+            "href" : null
+        };
+        window.plugins.nativepagetransitions.fade(
+            options,
+            function (msg) {console.log("SUCCESS: " + JSON.stringify(msg))},
+            function (msg) {alert("ERROR: "   + JSON.stringify(msg))}
+        );
+      }
+    },
+
     checkSimulator: function() {
       if (window.navigator.simulator === true) {
         alert('This plugin is not available in the simulator.');
