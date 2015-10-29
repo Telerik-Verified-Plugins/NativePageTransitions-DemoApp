@@ -22,7 +22,7 @@
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
   "FrameworkVersion": "4.0.0",
   "CorePlugins": [
-    "com.telerik.plugins.nativepagetransitions@0.5.1",
+    "com.telerik.plugins.nativepagetransitions@0.5.3",
     "cordova-plugin-console",
     "cordova-plugin-crosswalk-webview@1.2.0",
     "cordova-plugin-dialogs",
