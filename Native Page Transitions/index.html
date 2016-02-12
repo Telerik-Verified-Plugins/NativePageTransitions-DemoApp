@@ -40,6 +40,24 @@
             Custom plugins don't work in the simulator and the AppBuilder companion app,
             so inside Telerik AppBuilder choose Run - Build - iOS/Android/WP8 - App package.
         </p>
+      <p>
+        <a href="second.html">second page (bundled)</a><br/><br/>
+        <a href="eigth.html">eigth page (livesynced)!</a><br/><br/>
+        <a onclick="slideBaby()">eigth page (livesynced, slide)!</a>
+        <script>
+          function slideBaby() {
+            var options = {
+              "direction" : "right",
+              "href" : "eigth.html"
+            };
+            window.plugins.nativepagetransitions.flip(
+              options,
+              function (msg) {alert("SUCCESS: " + JSON.stringify(msg))},
+              function (msg) {alert("ERROR: "   + JSON.stringify(msg))}
+            );
+          }
+        </script>
+      </p>
     </div>
 
     <!--Demo View-->

@@ -2,11 +2,11 @@
   "ProjectName": "Native Page Transitions",
   "ProjectGuid": "50d05748-b326-4b02-b459-9fe1db993885",
   "projectVersion": 1,
-  "AppIdentifier": "com.telerik.plugindemo.nativepagetransitions",
-  "DisplayName": "Native Page Transitions",
+  "AppIdentifier": "com.telerik.plugindemo.nativepagetransitions2",
+  "DisplayName": "Native Transitions",
   "Author": "Telerik",
-  "Description": "Native Page Transitions",
-  "BundleVersion": "1.0",
+  "Description": "Native Transitions",
+  "BundleVersion": "1.0.1",
   "AndroidVersionCode": "2",
   "iOSDeviceFamily": [
     "1",
@@ -20,15 +20,14 @@
   "WP8PublisherID": "{f523594f-0ae7-43da-bc44-f7ce1202df9c}",
   "WP8ProductID": "{50d05748-b326-4b02-b459-9fe1db993885}",
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "FrameworkVersion": "4.0.0",
+  "FrameworkVersion": "3.8.0",
   "CorePlugins": [
-    "com.telerik.plugins.nativepagetransitions@0.5.3",
-    "cordova-plugin-console",
-    "cordova-plugin-crosswalk-webview@1.2.0",
-    "cordova-plugin-dialogs",
-    "cordova-plugin-splashscreen",
-    "cordova-plugin-statusbar",
-    "cordova-plugin-vibration"
+    "com.telerik.plugins.nativepagetransitions@0.6.1",
+    "org.apache.cordova.console",
+    "org.apache.cordova.dialogs",
+    "org.apache.cordova.splashscreen",
+    "org.apache.cordova.statusbar",
+    "org.apache.cordova.vibration"
   ],
   "AndroidPermissions": [
     "android.permission.ACCESS_NETWORK_STATE",
