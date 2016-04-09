@@ -7,7 +7,7 @@
   "Author": "Telerik",
   "Description": "Native Transitions",
   "BundleVersion": "1.0.1",
-  "AndroidVersionCode": "2",
+  "AndroidVersionCode": "4",
   "iOSDeviceFamily": [
     "1",
     "2"
